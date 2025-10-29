@@ -18,17 +18,19 @@
 </head>
 <body>
   <header class="navbar">
-    <div class="brand"><div class="logo">🌐</div><h1>Unblockers</h1></div>
-    <div class="nav-controls"><a class="nav-btn" href="./index.html">Home</a></div>
+    <div class="brand">
+      <div style="font-size:28px">�</div>
+      <h1>Gaming Brothers 103</h1>
+    </div>
+    <div class="nav-controls">
+      <a class="nav-btn" href="index.html">🎮 Games</a>
+      <a class="nav-btn" href="apps.html">📱 Apps</a>
+      <a class="nav-btn active" href="unblockers.html">🌐 Unblockers</a>
+    </div>
   </header>
 
   <main>
-    <div class="top-actions">
-      <button class="btn" id="openNew">Open Selected (new window)</button>
-      <button class="btn" id="loadPreview">Load in Preview</button>
-    </div>
-
-    <div id="previewWrap" class="preview hidden"><iframe id="previewFrame" src="about:blank" sandbox="allow-scripts allow-forms allow-same-origin allow-pointer-lock"></iframe></div>
+    <!-- click any link to open it directly in a new window -->
 
     <!-- Interstellar -->
     <div class="section">
@@ -94,26 +96,13 @@
 
       Object.keys(groups).forEach(k=>buildList(k, groups[k]));
 
-      let selectedUrl = null;
+      // clicking a link opens it immediately in a new tab
       document.body.addEventListener('click', e=>{
         const a = e.target.closest('.link-a');
         if(!a) return;
         e.preventDefault();
         const url = a.getAttribute('data-url');
-        document.querySelectorAll('.link').forEach(x=>x.style.boxShadow='');
-        a.closest('.link').style.boxShadow='0 6px 18px rgba(0,0,0,0.6)';
-        selectedUrl = url;
-      });
-
-      document.getElementById('openNew').addEventListener('click', ()=>{
-        if(!selectedUrl) return alert('Select a link');
-        window.open(selectedUrl,'_blank');
-      });
-
-      document.getElementById('loadPreview').addEventListener('click', ()=>{
-        if(!selectedUrl) return alert('Select a link');
-        document.getElementById('previewFrame').src = selectedUrl;
-        document.getElementById('previewWrap').classList.remove('hidden');
+        try{ window.open(url,'_blank'); }catch(e){ window.location.href = url }
       });
     })();
   </script>
