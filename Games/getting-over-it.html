@@ -25,7 +25,13 @@ back.href = currentHost + "/index.html"; // or "/apps.html" if you want that pag
 <html lang="en-us">
 
 <head>
-    <base href="https://cdn.jsdelivr.net/gh/genizy/web-port@main/getting-over-it/">
+    <script>
+  // Define your CDN base path once
+  const CDN_BASE = "https://cdn.jsdelivr.net/gh/genizy/web-port@main/getting-over-it/";
+
+  // Helper to prefix all relative paths
+  const cdn = (path) => CDN_BASE + path;
+</script>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | Getting Over It</title>
