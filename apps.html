@@ -15,8 +15,15 @@
 </head>
 <body>
   <header class="navbar">
-    <div class="brand"><div class="logo">🎮</div><h1>Apps</h1></div>
-    <div class="nav-controls"><a class="nav-btn" href="./index.html">Home</a></div>
+    <div class="brand">
+      <div style="font-size:28px">🎮</div>
+      <h1>Gaming Brothers 103</h1>
+    </div>
+    <div class="nav-controls">
+      <a class="nav-btn" href="index.html">🎮 Games</a>
+      <a class="nav-btn active" href="apps.html">📱 Apps</a>
+      <a class="nav-btn" href="unblockers.html">🌐 Unblockers</a>
+    </div>
   </header>
 
   <main id="main">
@@ -28,14 +35,7 @@
       </div>
     </div>
 
-    <div class="controls" style="justify-content:center">
-      <button class="btn" id="openNew">Open Selected (new window)</button>
-      <button class="btn" id="openPreview">Show Preview</button>
-    </div>
-
-    <div class="preview hidden" id="previewWrap">
-      <iframe id="previewFrame" src="about:blank" sandbox="allow-scripts allow-forms allow-same-origin allow-pointer-lock"></iframe>
-    </div>
+    <!-- clicking a card opens the app in a new window automatically -->
   </main>
 
   <script>
@@ -44,21 +44,12 @@
       const previewWrap = document.getElementById('previewWrap');
       const previewFrame = document.getElementById('previewFrame');
 
-      // select card behavior
+      // clicking a card opens the app immediately in a new tab
       document.querySelectorAll('.app-card').forEach(c=>{
-        c.addEventListener('click', ()=>{ document.querySelectorAll('.app-card').forEach(x=>x.style.boxShadow=''); c.style.boxShadow='0 6px 20px rgba(0,0,0,0.6)'; selected = c });
-      });
-
-      document.getElementById('openNew').addEventListener('click', ()=>{
-        if(!selected) return alert('Select an app');
-        const url = selected.getAttribute('data-src');
-        window.open(url,'_blank');
-      });
-
-      document.getElementById('openPreview').addEventListener('click', ()=>{
-        if(!selected) return alert('Select an app');
-        previewFrame.src = selected.getAttribute('data-src');
-        previewWrap.classList.remove('hidden');
+        c.addEventListener('click', ()=>{
+          const url = c.getAttribute('data-src');
+          try{ window.open(url, '_blank'); }catch(e){ window.location.href = url }
+        });
       });
     })();
   </script>
