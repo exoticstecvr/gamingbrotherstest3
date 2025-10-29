@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Super Mario VS</title>
+<style>:root{--bg:#07131a;--panel:#0b1220;--accent:#ffd369;--muted:#9aa6b2}html,body{height:100%;margin:0;background:linear-gradient(180deg,#03121a,#071623);color:#fff;font-family:Inter,Segoe UI,Arial,sans-serif}.wrap{max-width:1200px;margin:18px auto;padding:8px}header{display:flex;align-items:center;gap:12px}header a{color:var(--muted);text-decoration:none}.player-frame{background:#000;border-radius:12px;padding:12px;border:4px solid rgba(255,255,255,0.06)}.view{position:relative;height:70vh;border-radius:8px;overflow:hidden;background:#000}.view iframe{width:100%;height:100%;border:0}.controls{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;display:flex;gap:18px;background:rgba(3,6,10,0.9);padding:12px;border-radius:12px;border:2px solid rgba(255,255,255,0.06);box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:999}.btn{background:#0b1220;color:var(--accent);padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;display:flex;align-items:center;gap:8px}@media (max-width:700px){.view{height:56vh}.controls{left:8%;transform:none}}</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a href="../index.html">◀ Back</a>
+      <h2 style="margin:0;color:var(--accent);padding-left:8px">Super Mario VS</h2>
+    </header>
+
+    <div class="player-frame" id="playerFrame">
+      <div class="view" id="viewWrap">
+        <iframe id="gameFrame" src="https://mr-funkinguy.github.io/gfile/mariovsluigi/index.html" allowfullscreen sandbox="allow-scripts allow-forms allow-same-origin allow-pointer-lock"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="openNew">Open (new window)</button>
+    <button class="btn" id="fullscreenBtn">Fullscreen</button>
+    <button class="btn" id="homeBtn">Home</button>
+  </div>
+
+<script>
+(function(){
+  const url = 'https://mr-funkinguy.github.io/gfile/mariovsluigi/index.html';
+  const viewWrap = document.getElementById('viewWrap');
+  document.getElementById('fullscreenBtn').addEventListener('click', async ()=>{try{ if (document.fullscreenElement) await document.exitFullscreen(); else await viewWrap.requestFullscreen(); }catch(e){console.warn(e)}});
+  document.getElementById('openNew').addEventListener('click', ()=>{const w = window.open('about:blank','_blank'); if(!w){alert('Popup blocked');return} const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Super Mario VS - New Window</title><style>html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif} iframe{position:absolute;inset:0;border:0;width:100%;height:100%}.bar{position:fixed;left:0;right:0;bottom:0;padding:8px;background:rgba(0,0,0,0.6);display:flex;gap:8px;justify-content:center}.bar button,a{background:#0b1220;color:#ffd369;padding:8px 12px;border-radius:6px;text-decoration:none;border:1px solid rgba(255,255,255,0.04)}</style></head><body><iframe src="${url}" allowfullscreen></iframe><div class="bar"><button id="back">Back to Home</button><a id="openDirect" target="_blank" rel="noopener noreferrer" href="${url}">Open Direct</a></div><script>document.getElementById('back').addEventListener('click', ()=>{try{if(window.opener && !window.opener.closed){try{window.opener.location.href = '../index.html'}catch(e){} } }finally{window.close()}})<\/script></body></html>`; w.document.open(); w.document.write(html); w.document.close();}); document.getElementById('homeBtn').addEventListener('click', ()=>{window.location.href = '../index.html'});
+})();
+</script>
+</body>
+</html>
