@@ -10,6 +10,12 @@
   <div class="wrap">
     <header>
       <a href="../apps.html">◀ Back</a>
+      <script>
+// Force the back link to always go to the local site version, not the CDN
+const back = document.getElementById("backLink");
+const currentHost = window.location.origin;
+back.href = currentHost + "/index.html"; // or "/apps.html" if you want that page instead
+</script>
       <h2 style="margin:0;color:var(--accent);padding-left:8px">Getting Over It</h2>
     </header>
 
@@ -205,5 +211,3 @@
 </script>
 </body>
 </html>
-
-
