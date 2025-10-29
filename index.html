@@ -1,84 +1,157 @@
-/* primary theme */
-:root{--bg:#0b0f13;--panel:#0f1317;--muted:#9aa6b2;--accent:#f5c400}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#050607,#0b0f13 40%);color:#f3f4f6}
-header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-bottom:1px solid rgba(255,255,255,0.03)}
-.brand{display:flex;align-items:center;gap:12px}
-.logo{width:36px;height:36px;border-radius:6px;background:linear-gradient(135deg,#111827,#1f2937);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
-nav{display:flex;gap:8px}
-.nav-btn{background:#0b1220;border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:12px;color:#e6e6e6;font-size:13px;text-decoration:none}
-.nav-btn.active{background:linear-gradient(90deg,#1f2937,#111827);box-shadow:0 6px 18px rgba(0,0,0,0.6)}
-.container{max-width:1280px;margin:18px auto;padding:0 18px}
-.controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.search{display:flex;gap:8px}
-.search input{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.02);color:inherit;min-width:260px}
-.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
-@media (max-width:1200px){.grid{grid-template-columns:repeat(4,1fr)}}
-@media (max-width:1000px){.grid{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:420px){.grid{grid-template-columns:1fr}}
-.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);border-radius:12px;overflow:hidden;padding:8px;display:flex;flex-direction:column;gap:8px;text-decoration:none}
-.thumb{width:100%;height:0;padding-bottom:56%;background:#0b0f13;border-radius:8px;overflow:hidden;display:block;position:relative}
-.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.title{font-weight:700;color:#ffd369;text-align:center;background:rgba(0,0,0,0.25);padding:8px 6px;border-radius:6px;margin-top:auto}
-.caption{font-size:12px;color:var(--muted);text-align:center;margin-top:4px}
-footer{padding:18px;text-align:center;color:var(--muted)}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gaming Brothers 103</title>
+  <meta name="theme-color" content="#0b0f13">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- animated background canvas -->
+  <canvas id="bubbleCanvas" aria-hidden="true"></canvas>
 
-/* --- additional UI styles (from the modern layout) --- */
-.navbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(0,0,0,0.15));backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-bottom:1px solid rgba(255,204,0,0.08)}
-.brand{display:flex;align-items:center;gap:12px}
-.brand h1{font-size:20px;color:#ffcc00;margin-right:6px}
-.nav-controls{display:flex;gap:8px}
-.nav-btn{background:#151521;border:1px solid rgba(255,204,0,0.06);color:#ffcc00;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700}
-.nav-btn.active{background:#3b82f6;color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(59,130,246,0.12)}
+  <nav class="navbar">
+    <div class="brand">
+      <div style="font-size:28px">🎮</div>
+      <h1>Gaming Brothers 103</h1>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn active" id="nav-games" onclick="showSection('games')">🎮 Games</button>
+      <button class="nav-btn" id="nav-apps" onclick="showSection('apps')">📱 Apps</button>
+      <button class="nav-btn" id="nav-unblockers" onclick="showSection('unblockers')">🌐 Unblockers</button>
+    </div>
+  </nav>
 
-#main{padding:18px;display:flex;flex-direction:column;align-items:center;gap:18px;max-width:1300px;margin:0 auto}
+  <main class="container" id="main">
+    <div class="controls">
+      <div class="search"><input id="q" placeholder="Search games..." aria-label="Search games"></div>
+      <div style="color:var(--muted);font-size:13px">Click a card to open the game page</div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
 
-.container{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem;width:100%}
-.game-card{background: rgba(20,20,35,0.6);border-radius:15px;overflow:hidden;cursor:pointer;transition: transform .18s, box-shadow .18s;text-align:center;border:1px solid rgba(255,204,0,0.12);backdrop-filter: blur(6px);position: relative;padding-bottom:10px}
-.game-card:hover{transform:scale(1.04);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
-.game-card img{width:100%;height:140px;object-fit:cover;display:block;border-bottom:1px solid rgba(255,204,0,0.08)}
-.game-card h3{margin:10px 6px;font-size:1rem;color:#ffcc00}
+  <!-- random text ticker -->
+  <div id="randomTicker" class="random-text">Welcome to Gaming Brothers 103</div>
 
-#game-view{display:none;flex-direction:column;align-items:center;width:100%}
-iframe{width:100%;max-width:1200px;height:640px;border:none;border-radius:12px;margin-top:8px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
-.controls{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.back-btn{padding:.6rem 1.2rem;background:#222244;color:#ffcc00;border:none;border-radius:8px;cursor:pointer;font-weight:bold}
-.back-btn:hover{background:#333366}
+  <footer>&copy; 2025 Gaming Brothers 103. All rights reserved.</footer>
 
-.content-section{width:100%}
-.hidden{display:none}
-.apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:12px}
-.app-card{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;display:flex;gap:8px;align-items:center;border:1px solid rgba(255,255,255,0.03)}
-.unblocker-section{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);margin-bottom:12px}
+  <!-- game list + rendering script (unchanged) -->
+  <script>
+    // game list
+    const games = [
+      {slug:'people-playground', title:'People Playground', thumb:'https://peopleplaygroundfreedl.com/images/uploads/blog/2024-01-25/news2-am2ug.jpg'},
+      {slug:'fnaf-1', title:'Fnaf 1', thumb:'https://m.gjcdn.net/fireside-post-image/500/11034595-zpkhzsui-v4.webp'},
+      {slug:'fnaf-2', title:'Fnaf 2', thumb:'https://i.redd.it/pb73pin2jtx21.png'},
+      {slug:'fnaf-3', title:'Fnaf 3', thumb:'https://img.itch.zone/aW1nLzEyMDc2MjU0LmpwZw==/original/SQ218u.jpg'},
+      {slug:'fnaf-4', title:'Fnaf 4', thumb:'https://data.gameflare.com/games/6427/EVl34tkh8JLaIy-220-165.jpg'},
+      {slug:'sisters-location', title:'Sisters Location', thumb:'https://preview.redd.it/ikvc2pwn04c51.jpg?width=1080&crop=smart&auto=webp&s=f7e3e390ab48e01f02b58fd60c79c3a7af2e3935'},
+      {slug:'ucn', title:'Ultimate Custom Night', thumb:'https://www5.minijuegosgratis.com/v3/games/thumbnails/240344_7_sq.jpg'},
+      {slug:'pizza-sim', title:'Pizza Simulator', thumb:'https://mediaproxy.tvtropes.org/width/1200/https://static.tvtropes.org/pmwiki/pub/images/freddy_fazbears_pizzeria_simulator.png'},
+      {slug:'fnaf-world', title:'FNAF World', thumb:'https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co9ym0.jpg'},
+      {slug:'drift-hunters', title:'Drift Hunters', thumb:'https://drift-hunters.io/data/image/drift-hunters.png'},
+      {slug:'super-mario-construct', title:'Super Mario Construct', thumb:'https://img.itch.zone/aW1nLzE3ODA1ODE5LnBuZw==/315x250%23c/V5icUA.png'},
+      {slug:'ball-game', title:'Ball Game', thumb:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0KWcmzi4xm2rRRFJYvbMoIn-8muty2xGZIQ&s'},
+      {slug:'monkey-mart', title:'Monkey Mart', thumb:'https://nargames.com/storage/uploads/thumbs/monkey-mart.webp'},
+      {slug:'madalin-cars', title:'Madalin Cars', thumb:'https://madalinstuntcars2.io/data/image/madalin-stunt-cars-21.jpg'},
+      {slug:'slope', title:'Slope', thumb:'https://slope-play.com/cache/data/image/game/slope-logo-1-f309x309.webp'},
+      {slug:'super-mario-vs', title:'Super Mario Vs', thumb:'https://cdn2.steamgriddb.com/logo/36d84e693751820e0ebbc2cf3f1178b9.png'},
+      {slug:'sketchbook', title:'Sketchbook', thumb:'https://canada1.discourse-cdn.com/flex035/uploads/threejs/original/2X/0/051ece83d5266f62ca4f9a80ce35578dfd60be5c.jpeg'},
+      {slug:'retrobowl', title:'Retrobowl', thumb:'https://pbs.twimg.com/profile_images/1217942835527409665/swRMqEkK_400x400.jpg'},
+      {slug:'golf-hit', title:'Golf Hit', thumb:'https://golfhitgame.org//data/image/game/golf-hit.jpg'},
+      {slug:'slow-roads', title:'Slow Roads', thumb:'https://cdn.now.gg/apps-content/com.nowgg.h5.pub501.app51727/game-tiles/slow-roads.jpg'},
+      {slug:'getting-over-it', title:'Getting Over It', thumb:'https://sm.ign.com/ign_ap/cover/g/getting-ov/getting-over-it-with-bennett-foddy_3bxh.jpg'},
+      {slug:'undertale', title:'Undertale', thumb:'https://fontmeme.com/images/undertale-font-370x370.jpg'},
+      {slug:'plants-vs-zombies-1', title:'Plants vs Zombies 1', thumb:'https://media.contentapi.ea.com/content/dam/gin/images/2025/07/pvzr-key-art.png.adapt.crop1x1.767p.png'},
+      {slug:'plants-vs-zombies-modded', title:'Plants vs Zombies (Modded)', thumb:'https://roblnet13.github.io/pvz/game/images/gamethumbnail5.png'},
+      {slug:'plants-vs-zombies-scratch', title:'Plants vs Zombies (Scratch)', thumb:'https://img.itch.zone/aW1nLzE2MTg4MTIxLnBuZw==/original/RwzGLx.png'},
+      {slug:'plants-vs-zombies-gardenless', title:'Plants vs Zombies Gardenless', thumb:'https://pvzge.com/pvz_logo@200.webp'},
+      {slug:'on-off', title:'On/Off', thumb:'images/onoff.jpg'},
+      {slug:'rocket-league', title:'Rocket League', thumb:'https://upload.wikimedia.org/wikipedia/commons/e/e0/Rocket_League_coverart.jpg'},
+      {slug:'stickman-hook', title:'Stickman Hook', thumb:'https://play-lh.googleusercontent.com/yXqBI1Vb1b-xjwmXLE2T7FQbgHIxfvjze1b6jO2aLHfy8Y8ta7NFSEVqZoPHtM2Ajyrl'},
+      {slug:'grow-a-garden', title:'Grow A Garden', thumb:'https://www.spectator.co.uk/wp-content/uploads/2025/07/5Julygamer.png'},
+      {slug:'car-crash-test', title:'Car Crash Test', thumb:'https://data.pacogames.com/images/fb/car-crash-test.webp'},
+      {slug:'steals-brainrot', title:'Steals Brainrot', thumb:'https://static.wikitide.net/italianbrainrotwiki/thumb/6/60/Steal_A_Brainrot.png/270px-Steal_A_Brainrot.png'},
+      {slug:'baldis-basics', title:"Baldi's Basics", thumb:'https://upload.wikimedia.org/wikipedia/en/1/13/Baldis_Basics_in_Education_and_Learining_cover_art.webp'},
+      {slug:'csgo', title:'CS:GO', thumb:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKnQQ9CTzkTvDh9egbOIVZXJ6nnQb9FU8A4Q&s'},
+      {slug:'deer-simulator', title:'Deer Simulator', thumb:'https://image.api.playstation.com/vulcan/ap/rnd/202110/2708/34wJVdVMepd6ZTPPbrCExUTK.png'},
+      {slug:'speed-stars', title:'Speed Stars', thumb:'https://speedstars2.io/data/image/game/speed-stars.png'},
+      {slug:'vegas-clash3d', title:'Vegas Clash 3D', thumb:'https://imgs.crazygames.com/games/vegas-clash-3d-yxd/cover_1x1-1709112711287.png?format=auto&quality=70&metadata=none'},
+      {slug:'tabs', title:'TABS', thumb:'https://upload.wikimedia.org/wikipedia/en/9/99/Totally_Accurate_Battle_Simulator_logo.jpg'},
+      {slug:'minecraft', title:'Minecraft', thumb:'https://i.imgur.com/nKsYRdJ.png'},
+      {slug:'angry-birds-space', title:'Angry Birds Space', thumb:'https://upload.wikimedia.org/wikipedia/en/thumb/6/66/Angry_Birds_Space_icon.png/250px-Angry_Birds_Space_icon.png'},
+      {slug:'cluster-rush', title:'Cluster Rush', thumb:'https://1games.io/data/image/game/cluster-rush/banner/granny-1.png'},
+      {slug:'papas-pizzeria', title:"Papa's Pizzeria", thumb:'https://cdn2.steamgriddb.com/grid/d135bbad9fe86c6d14520bf92357b890.png'},
+      {slug:'cut-the-rope', title:'Cut The Rope', thumb:'https://img.gamepix.com/games/cut-the-rope/cover/cut-the-rope.png?w=1200&ar=16:10'},
+      {slug:'apple-shooter', title:'Apple Shooter', thumb:'https://imgs.crazygames.com/games/apple-shooter/cover_16x9-1711357016265.jpeg?metadata=none&quality=100&width=1200&height=630&fit=crop'},
+      {slug:'slime-rancher', title:'Slime Rancher', thumb:'https://image.api.playstation.com/vulcan/img/cfn/11307NUlRPcxCgzizu6gpFZiR_WIqYHV9W0G8obBn0J1qCXY-SjbkzKihVNA3WzUQHbD08zWVaN-a7U5--t57lc-gckkQ0f-.png'},
+      {slug:'raft', title:'Raft', thumb:'https://images.seeklogo.com/logo-png/46/1/raft-logo-png_seeklogo-464423.png'},
+      {slug:'elastic-man', title:'Elastic Man', thumb:'https://img.gamepix.com/games/elastic-man/cover/elastic-man.png?w=1200&ar=16:10'},
+      {slug:'snail-bob-1', title:'Snail Bob 1', thumb:'https://play-lh.googleusercontent.com/tmC5BUd8O4z-YsmDLKdTkkdRNtPHQukr95YxIPH3ouiZ2unLiC9IVSsdJnp5D-1R8Ds'},
+      {slug:'snail-bob-2', title:'Snail Bob 2', thumb:'https://play-lh.googleusercontent.com/n6oWAac0NJdpaI3_IWYLrhmWwolGs9_qXbKYupjpIZymmpH57P2YjwiVpSJLl3Z3zbg'},
+      {slug:'snail-bob-3', title:'Snail Bob 3', thumb:'https://play-lh.googleusercontent.com/CsqCy4QYYzn-sq-0lgaiyzx3U_4UpOlGxtFvutqhGvWyVfo-fJUHUKcyZgLWjeFdPg'}
+    ];
 
-/* random text ticker (bottom) */
-.random-text{width:100%;text-align:center;padding:12px 8px;color:#ffd369;font-weight:700;font-family:monospace;opacity:1;transition:opacity .6s}
-.random-text.fade-out{opacity:0}
-.random-text.fade-in{opacity:1}
+    function thumbUrl(title) {
+      // simple placeholder thumbnail with game title; replace with real images if you have them
+      return 'https://via.placeholder.com/640x360/111827/FFD369?text=' + encodeURIComponent(title);
+    }
 
-/* background bubbles canvas */
-#bubbleCanvas{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  /* put the canvas above the page background but behind UI so bubbles are visible and won't block clicks */
-  z-index:0;
-  pointer-events:none;
-  display:block;
-}
+    function render(list) {
+      if (!grid) return;
+      grid.innerHTML = '';
+      list.forEach(g => {
+        const card = document.createElement('a');
+        card.className = 'card';
+        card.href = 'Games/' + g.slug + '.html';
+        card.setAttribute('title', g.title);
+        card.innerHTML = `
+          <div class="thumb"><img loading="lazy" src="${g.thumb || thumbUrl(g.title)}" alt="${g.title}"></div>
+          <div class="title">${g.title}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
 
-/* ensure main UI elements are above the canvas and use a consistent panel background */
-.navbar, .container, .controls, footer, .random-text, .brand, .game-card, .card, .player-frame, .view, .content-section {
-  position:relative;
-  z-index:1;
-}
+    // initial render
+    render(games);
 
-/* normalize panel backgrounds so bubbles appear consistently behind them */
-.game-card, .card, .player-frame, .app-card, .unblocker-section {
-  background: var(--panel);
-  border: 1px solid rgba(255,255,255,0.03);
-}
+    const search = document.getElementById('q');
+    if (search) {
+      search.addEventListener('input', e => {
+        const q = e.target.value.trim().toLowerCase();
+        render(games.filter(g => g.title.toLowerCase().includes(q) || g.slug.includes(q)));
+      });
+    }
+  </script>
 
-@media (max-width:640px){iframe{height:520px}}
+  <!-- bubble animation script placeholder (keeps behavior) -->
+  <script src="/placeholder-bubble.js" defer></script>
+
+  <script>
+    // rotate messages with fade animation
+    const messages = [
+      "gamermonkey4564: What up doctor dre, dangshang bing yang:",
+      "kbear: jello is the best dev",
+      "gamermonkey4564: w squirtgun"
+    ];
+    let idx = 0;
+    const ticker = document.getElementById('randomTicker');
+    function showNext(){
+      if(!ticker) return;
+      ticker.classList.remove('fade-in');
+      ticker.classList.add('fade-out');
+      setTimeout(()=>{
+        ticker.textContent = messages[idx];
+        ticker.classList.remove('fade-out');
+        ticker.classList.add('fade-in');
+        idx = (idx+1) % messages.length;
+      }, 600);
+    }
+    // start
+    setInterval(showNext, 3500);
+    // show first immediately
+    setTimeout(()=>{ if(ticker){ ticker.textContent = messages[0]; ticker.classList.add('fade-in'); idx = 1 } }, 200);
+  </script>
+</body>
+</html>
