@@ -19,7 +19,33 @@
       </div>
     </div>
   </div>
+<script>
+// Enable mouse lock (pointer lock) for the iframe container
+(function() {
+  const iframe = document.getElementById('gameFrame');
+  const view = document.getElementById('viewWrap');
 
+  // When the user clicks inside the iframe, request pointer lock
+  view.addEventListener('click', () => {
+    if (view.requestPointerLock) {
+      view.requestPointerLock();
+    } else if (view.mozRequestPointerLock) {
+      view.mozRequestPointerLock();
+    } else if (view.webkitRequestPointerLock) {
+      view.webkitRequestPointerLock();
+    }
+  });
+
+  // Listen for pointer lock change events
+  document.addEventListener('pointerlockchange', () => {
+    if (document.pointerLockElement === view) {
+      console.log('Pointer locked to iframe area.');
+    } else {
+      console.log('Pointer unlocked.');
+    }
+  });
+})();
+</script>
   <div class="controls">
     <button class="btn" id="openNew">Open (new window)</button>
     <button class="btn" id="fullscreenBtn">Fullscreen</button>
