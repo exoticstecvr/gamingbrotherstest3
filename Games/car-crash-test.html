@@ -15,7 +15,7 @@
 
     <div class="player-frame" id="playerFrame">
       <div class="view" id="viewWrap">
-        <iframe id="gameFrame" src="https://www.miniplay.com/embed/car-crash-test" allowfullscreen sandbox="allow-scripts allow-forms allow-same-origin allow-pointer-lock"></iframe>
+        <iframe id="gameFrame" src="https://deadly-descent.games.playgama.net/cm1jbpwt7000sy40epx126yj0/index.html?platform_id=playgama" allowfullscreen sandbox="allow-scripts allow-forms allow-same-origin allow-pointer-lock"></iframe>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
 
 <script>
 (function(){
-  const url = 'https://www.miniplay.com/embed/car-crash-test';
+  const url = 'https://deadly-descent.games.playgama.net/cm1jbpwt7000sy40epx126yj0/index.html?platform_id=playgama';
   const viewWrap = document.getElementById('viewWrap');
   document.getElementById('fullscreenBtn').addEventListener('click', async ()=>{try{ if (document.fullscreenElement) await document.exitFullscreen(); else await viewWrap.requestFullscreen(); }catch(e){console.warn(e)}});
   document.getElementById('openNew').addEventListener('click', ()=>{const w = window.open('about:blank','_blank'); if(!w){alert('Popup blocked');return} const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Car Crash Test - New Window</title><style>html,body{height:100%;margin:0;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif} iframe{position:absolute;inset:0;border:0;width:100%;height:100%}.bar{position:fixed;left:0;right:0;bottom:0;padding:8px;background:rgba(0,0,0,0.6);display:flex;gap:8px;justify-content:center}.bar button,a{background:#0b1220;color:#ffd369;padding:8px 12px;border-radius:6px;text-decoration:none;border:1px solid rgba(255,255,255,0.04)}</style></head><body><iframe src="${url}" allowfullscreen></iframe><div class="bar"><button id="back">Back to Home</button><a id="openDirect" target="_blank" rel="noopener noreferrer" href="${url}">Open Direct</a></div><script>document.getElementById('back').addEventListener('click', ()=>{try{if(window.opener && !window.opener.closed){try{window.opener.location.href = '../index.html'}catch(e){} } }finally{window.close()}})<\/script></body></html>`; w.document.open(); w.document.write(html); w.document.close();}); document.getElementById('homeBtn').addEventListener('click', ()=>{window.location.href = '../index.html'});
@@ -36,3 +36,4 @@
 </script>
 </body>
 </html>
+
